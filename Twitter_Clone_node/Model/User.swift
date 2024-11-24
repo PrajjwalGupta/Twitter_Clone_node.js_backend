@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct user : Decodable, Identifiable {
+struct ApiResponse: Decodable {
+    var user: User
+    var token: String
+}
+
+struct User : Decodable, Identifiable {
     var _id: String
     var id: String {
         return _id
