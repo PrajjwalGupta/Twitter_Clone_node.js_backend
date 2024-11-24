@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct RegisterView: View {
+    @StateObject var viewModel = AuthViewModel()
+    
     @State var name = ""
     @State var email = ""
     @State var password = ""
+    
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         VStack {
@@ -44,7 +47,9 @@ struct RegisterView: View {
                     .foregroundColor(.gray)
                 HStack{
                     Spacer()
-                    Button(action: {}, label: {
+                    Button(action: {
+                        self.viewModel.register(reqBody: ["username": "sam112", "name": name, "email": email, "password": "12345678"])
+                    }, label: {
                         Capsule().frame(width: 100, height: 40, alignment: .center)
                             .foregroundColor(Color(red: 29/255, green: 161/255, blue: 242/255))
                             .overlay {
