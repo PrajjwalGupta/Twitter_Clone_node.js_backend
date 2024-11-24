@@ -23,6 +23,8 @@ public class AuthServices {
     
     public static var requestDomain = ""
     
+    //User login
+    
     static func login(email: String, password: String, completion: @escaping(_ result: Result<Data?, AuthenticationError>) -> Void) {
         let urlString = URL(string: "http://localhost:3007/users/login")!
         makeRequest(urlString: urlString, reqBody: ["email": email, "password": password]) { result in
@@ -35,6 +37,8 @@ public class AuthServices {
             }
         }
     }
+  
+    //Register user
     
     static func register(email: String, username: String, password: String, name: String, completion: @escaping(_ result: Result<Data?, AuthenticationError>) -> Void) {
         let urlString = URL(string: "http://localhost:3007/users")!
@@ -49,6 +53,45 @@ public class AuthServices {
             }
         }
     }
+    //Fetch users
+    static func fetchUser(id: String, completion: @escaping (_ result: Result<Data, AuthenticationError>) -> Void) {
+        let urlString = URL(string: "http://localhost:3007/users/\(id)")!
+        let session = URLSession.shared
+        var urlRequest = URLRequest(url: urlString)
+        
+        urlRequest.httpMethod = "GET"
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let task = session.dataTask(with: urlRequest) { data, res, error in
+            guard let error = error else {
+                return
+            }
+            guard let data = data else {
+                return
+                completion(.failure(.invalidCredentials))
+            }
+            completion(.success(data))
+            
+            do {
+                if let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                    
+                }
+            } catch let error {
+                completion(.failure(.invalidCredentials))
+                print(error)
+            }
+           
+        }
+        task.resume()
+        
+    }
+    
+    
+    
+    
+    
+    
     static func makeRequest(urlString: URL, reqBody: [String: Any], completion: @escaping (_ result: Result<Data?, Networkerror>) -> Void) {
         
             let session = URLSession.shared
@@ -80,5 +123,5 @@ public class AuthServices {
             }
             task.resume()
         }
-    
+   
 }
