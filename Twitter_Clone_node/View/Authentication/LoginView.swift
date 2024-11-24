@@ -11,6 +11,7 @@ struct LoginView: View {
     @State var email = ""
     @State var password = ""
     @State var emailDone = false
+    @StateObject var viewModel = AuthViewModel()
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         if !emailDone {
@@ -42,6 +43,7 @@ struct LoginView: View {
                 Spacer(minLength: 0)
                 VStack {
                     Button(action: {
+                       
                         if !email.isEmpty {
                             self.emailDone.toggle()
                         }
@@ -87,7 +89,7 @@ struct LoginView: View {
                 Spacer(minLength: 0)
                 VStack {
                     Button(action: {
-                        
+                        self.viewModel.login(email: email, password: password)
                     }, label: {
                         Capsule().frame(width: 360, height: 40, alignment: .center)
                             .foregroundColor(Color(red: 29/255, green: 161/255, blue: 242/255))
