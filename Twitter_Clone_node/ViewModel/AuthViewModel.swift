@@ -15,6 +15,7 @@ class AuthViewModel: ObservableObject {
     init() {
         let defaults = UserDefaults.standard
         let token = defaults.object(forKey: "jsonwebtoken")
+       // defaults.removeObject(forKey: "jsonwebtoken")
         if token != nil {
             isAuthenticated = true
             
@@ -27,7 +28,9 @@ class AuthViewModel: ObservableObject {
         else {
             isAuthenticated = false
         }
-    }
+   }
+    
+    static let shared = AuthViewModel()
     
     func login(email: String, password: String) {
         let defaults = UserDefaults.standard
@@ -80,7 +83,15 @@ class AuthViewModel: ObservableObject {
     }
     
     func logout() {
-        
+        let defaults = UserDefaults.standard
+        let dictionary = defaults.dictionaryRepresentation()
+        dictionary.keys.forEach { key in
+            defaults.removeObject(forKey: key) }
+       // defaults.synchronize()
+        DispatchQueue.main.async {
+            self.isAuthenticated = false
+        }
+    
     }
       
     
