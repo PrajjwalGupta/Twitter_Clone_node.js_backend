@@ -15,7 +15,8 @@ class AuthViewModel: ObservableObject {
     init() {
         let defaults = UserDefaults.standard
         let token = defaults.object(forKey: "jsonwebtoken")
-       // defaults.removeObject(forKey: "jsonwebtoken")
+      //  logout()
+      //  defaults.removeObject(forKey: "jsonwebtoken")
         if token != nil {
             isAuthenticated = true
             
